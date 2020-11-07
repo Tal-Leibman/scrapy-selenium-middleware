@@ -11,7 +11,7 @@
 The middleware receives its settings from [scrapy project settings](https://docs.scrapy.org/en/latest/topics/settings.html) <br>
 
 in your scrapy project settings.py file add the following settings
-~~~python~~~
+```python
 DOWNLOADER_MIDDLEWARES = {"scrapy_selenium_middleware.SeleniumDownloader":451}
 CONCURRENT_REQUESTS = 1 # multiple concurrent browsers are not supported yet
 SELENIUM_IS_HEADLESS = False
@@ -19,7 +19,7 @@ SELENIUM_PROXY = "http://user:password@my-proxy-server:port" # set to None to no
 SELENIUM_USER_AGENT = "User-Agent: Mozilla/5.0 (<system-information>) <platform> (<platform-details>) <extensions>"           
 SELENIUM_REQUEST_RECORD_SCOPE = ["api*"] # a list of regular expression to record the incoming requests by matching the url
 SELENIUM_FIREFOX_PROFILE_SETTINGS = {}
-~~~
+```
 
 
 
