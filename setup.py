@@ -23,6 +23,8 @@ setup_args = dict(
         "proxy",
         "web scraping",
         "render javascript",
+        "selenium-wire",
+        "headless browser",
     ],
     long_description_content_type="text/markdown",
     packages=find_namespace_packages("scrapy_selenium_middleware"),

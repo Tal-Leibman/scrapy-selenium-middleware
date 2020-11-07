@@ -8,7 +8,7 @@
 * `pip install`
  
 ## usage example
-The middleware receives its settings from scrapy project settings<br>
+The middleware receives its settings from [scrapy project settings](https://docs.scrapy.org/en/latest/topics/settings.html) <br>
 
 in your scrapy project settings.py file add the following settings
 ~~~python~~~
