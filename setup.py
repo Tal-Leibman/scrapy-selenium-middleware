@@ -10,7 +10,7 @@ setup_args = dict(
     author_email="leibman2@gmail.com",
     url="https://github.com/Tal-Leibman/scrapy-selenium-middleware",
     name="scrapy_selenium_middleware",
-    version="0.0.1",
+    version="0.0.2",
     description="""Scrapy middleware for downloading a page html source using selenium,
                 and interacting with the web driver in the request context
                 eventually returning an HtmlResponse to the spider
