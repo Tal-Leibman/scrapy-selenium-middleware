@@ -15,6 +15,10 @@ from seleniumwire.webdriver import Firefox
 from twisted.internet.threads import deferToThread
 
 log = logging.getLogger(__name__)
+
+for logger in ("selenium", "seleniumwire"):
+    logging.getLogger(logger).setLevel(logging.ERROR)
+
 ignore_http_methods = [
     "OPTIONS",
     "POST",

@@ -1,6 +1,4 @@
 from setuptools import setup, find_packages
-from setuptools import find_namespace_packages
-
 
 with open("README.md") as readme_file:
     README = readme_file.read()

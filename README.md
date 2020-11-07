@@ -8,8 +8,9 @@
 * `pip install scrapy-selenium-middleware`
  
 ## usage example
-The middleware receives its settings from [scrapy project settings](https://docs.scrapy.org/en/latest/topics/settings.html) <br>
+for a full scrapy project demo please go [here](https://github.com/Tal-Leibman/scrapy-selenium-middleware-example)
 
+The middleware receives its settings from [scrapy project settings](https://docs.scrapy.org/en/latest/topics/settings.html) <br>
 in your scrapy project settings.py file add the following settings
 ```python
 DOWNLOADER_MIDDLEWARES = {"scrapy_selenium_middleware.SeleniumDownloader":451}
