@@ -2,3 +2,4 @@
 build
 dist
 scrapy_selenium_middleware/scrapy_selenium_middleware.egg-info
+scrapy_selenium_middleware.egg-info
