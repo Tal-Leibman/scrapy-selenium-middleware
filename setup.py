@@ -1,4 +1,4 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 from setuptools import find_namespace_packages
 
 
@@ -27,8 +27,7 @@ setup_args = dict(
         "headless browser",
     ],
     long_description_content_type="text/markdown",
-    packages=find_namespace_packages("scrapy_selenium_middleware"),
-    package_dir={"": "scrapy_selenium_middleware"},
+    packages=find_packages(),
 )
 install_requires = [
     "scrapy==2.4.0",

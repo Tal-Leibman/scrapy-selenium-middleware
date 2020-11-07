@@ -5,7 +5,7 @@
 * Install  Firefox and [gekodriver](https://github.com/mozilla/geckodriver/releases) on the machine running this middleware
 
 ## pip
-* `pip install`
+* `pip install scrapy-selenium-middleware`
  
 ## usage example
 The middleware receives its settings from [scrapy project settings](https://docs.scrapy.org/en/latest/topics/settings.html) <br>
