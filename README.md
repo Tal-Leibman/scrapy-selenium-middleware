@@ -1,3 +1,6 @@
+[![Latest PyPI version](https://img.shields.io/pypi/v/scrapy-selenium-middleware)](https://pypi.org/project/scrapy-selenium-middleware/)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+
 # scrapy-selenium-middleware
 
 ## requirements
