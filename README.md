@@ -20,6 +20,7 @@ SELENIUM_PROXY = "http://user:password@my-proxy-server:port" # set to None to no
 SELENIUM_USER_AGENT = "User-Agent: Mozilla/5.0 (<system-information>) <platform> (<platform-details>) <extensions>"           
 SELENIUM_REQUEST_RECORD_SCOPE = ["api*"] # a list of regular expression to record the incoming requests by matching the url
 SELENIUM_FIREFOX_PROFILE_SETTINGS = {}
+SELENIUM_PAGE_LOAD_TIMEOUT = 120
 ```
 
 
