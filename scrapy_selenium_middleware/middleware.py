@@ -66,8 +66,8 @@ class SeleniumDownloader:
             crawler.settings.getbool("SELENIUM_IS_HEADLESS"),
             crawler.settings.get("SELENIUM_PROXY"),
             crawler.settings.get("SELENIUM_USER_AGENT"),
-            crawler.settings.getlist("SELENIUM_REQUEST_RECORD_SCOPE"),
-            crawler.settings.getdict("SELENIUM_FIREFOX_PROFILE_SETTINGS"),
+            crawler.settings.getlist("SELENIUM_REQUEST_RECORD_SCOPE", []),
+            crawler.settings.getdict("SELENIUM_FIREFOX_PROFILE_SETTINGS", {}),
             crawler.signals,
         )
 
