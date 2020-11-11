@@ -69,6 +69,7 @@ class SeleniumDownloader:
             crawler.settings.getlist("SELENIUM_REQUEST_RECORD_SCOPE", []),
             crawler.settings.getdict("SELENIUM_FIREFOX_PROFILE_SETTINGS", {}),
             crawler.signals,
+            crawler.settings.getint("SELENIUM_PAGE_LOAD_TIMEOUT", 120),
         )
 
         crawler.signals.connect(instance.spider_closed, spider_closed)
@@ -82,12 +83,14 @@ class SeleniumDownloader:
         request_scope: List[str],
         profile_settings: dict,
         signal: SignalManager,
+        selenium_page_load_timeout: int,
     ):
         self.is_headless = is_headless
         self.proxy = proxy
         self.user_agent = user_agent
         self.request_scope = request_scope
         self.profile_settings = profile_settings
+        self.selenium_page_load_timeout = selenium_page_load_timeout
         self.__driver: Optional[webdriver.Firefox] = None
         self.signal = signal
 
@@ -101,7 +104,11 @@ class SeleniumDownloader:
         self, request: Request, spider: SeleniumSpider
     ) -> HtmlResponse:
         driver = self._driver
+        driver.set_page_load_timeout(self.selenium_page_load_timeout)
         spider.browser_interaction_before_get(driver, request)
+        log.info(
+            f"web driver get url: {request.url} timeout : {self.selenium_page_load_timeout}"
+        )
         driver.get(request.url)
         data = spider.browser_interaction_after_get(driver, request)
         request.meta[RequestMetaKeys.return_value_browser_interaction.value] = data
