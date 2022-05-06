@@ -172,12 +172,12 @@ class SeleniumDownloader:
         return self.__driver
 
     def spider_closed(self):
-        for driver in self.drivers:
-            if driver is not None:
-                try:
-                    driver.quit()
-                except Exception:
-                    log.exception("failed to close browser on spider close")
+        while self.drivers.qsize() > 0:
+            driver = self.drivers.get()
+            try:
+                driver.quit()
+            except Exception:
+                log.exception("failed to close browser on spider close")
 
         if self.__driver is not None:
             try:
