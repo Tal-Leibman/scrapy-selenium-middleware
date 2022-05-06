@@ -70,20 +70,22 @@ class SeleniumDownloader:
             crawler.settings.getdict("SELENIUM_FIREFOX_PROFILE_SETTINGS", {}),
             crawler.signals,
             crawler.settings.getint("SELENIUM_PAGE_LOAD_TIMEOUT", 120),
+            crawler.settings.getint("CONCURRENT_REQUESTS", 1)
         )
 
         crawler.signals.connect(instance.spider_closed, spider_closed)
         return instance
 
     def __init__(
-        self,
-        is_headless: bool,
-        proxy: str,
-        user_agent: str,
-        request_scope: List[str],
-        profile_settings: dict,
-        signal: SignalManager,
-        selenium_page_load_timeout: int,
+            self,
+            is_headless: bool,
+            proxy: str,
+            user_agent: str,
+            request_scope: List[str],
+            profile_settings: dict,
+            signal: SignalManager,
+            selenium_page_load_timeout: int,
+            concurrent_drivers: int,
     ):
         self.is_headless = is_headless
         self.proxy = proxy
@@ -92,18 +94,24 @@ class SeleniumDownloader:
         self.profile_settings = profile_settings
         self.selenium_page_load_timeout = selenium_page_load_timeout
         self.__driver: Optional[webdriver.Firefox] = None
+
+        self.drivers: List[webdriver.Firefox] = [None] * concurrent_drivers
+        self.using_drivers: List[bool] = [False] * concurrent_drivers
+        self.concurrent_drivers = concurrent_drivers
+
         self.signal = signal
 
     def process_request(self, request: Request, spider: SeleniumSpider):
         if request.meta.get(RequestMetaKeys.use_middleware.value) and isinstance(
-            spider, SeleniumSpider
+                spider, SeleniumSpider
         ):
             return deferToThread(self.download_with_selenium, request, spider)
 
     def download_with_selenium(
-        self, request: Request, spider: SeleniumSpider
+            self, request: Request, spider: SeleniumSpider
     ) -> HtmlResponse:
-        driver = self._driver
+        driver, idx = self.get_driver()
+
         driver.set_page_load_timeout(self.selenium_page_load_timeout)
         spider.browser_interaction_before_get(driver, request)
         log.info(
@@ -112,13 +120,34 @@ class SeleniumDownloader:
         driver.get(request.url)
         data = spider.browser_interaction_after_get(driver, request)
         request.meta[RequestMetaKeys.return_value_browser_interaction.value] = data
-        html = self._driver.execute_script(
+        html = driver.execute_script(
             'return document.getElementsByTagName("html")[0].outerHTML'
         )
         response = HtmlResponse(
-            self._driver.current_url, body=html, encoding="utf-8", request=request
+            driver.current_url, body=html, encoding="utf-8", request=request
         )
+        self.using_drivers[idx] = False
         return response
+
+    def get_driver(self):
+        for i in range(self.concurrent_drivers):
+            if self.using_drivers[i]:
+                continue
+            self.using_drivers[i] = True
+            if self.drivers[i] is None:
+                log.info("driver is None opening a new driver")
+                self.drivers[i] = self._create_driver()
+            else:
+                try:
+                    self.drivers[i].execute(Command.STATUS)
+                except Exception:
+                    log.exception("driver not responding try to close and open new driver")
+                    try:
+                        self.drivers[i].quit()
+                    except Exception:
+                        log.exception("failed to close driver")
+                    self.drivers[i] = self._create_driver()
+            return self.drivers[i], i
 
     @property
     def _driver(self) -> webdriver.Firefox:
@@ -139,6 +168,13 @@ class SeleniumDownloader:
         return self.__driver
 
     def spider_closed(self):
+        for driver in self.drivers:
+            if driver is not None:
+                try:
+                    driver.quit()
+                except Exception:
+                    log.exception("failed to close browser on spider close")
+
         if self.__driver is not None:
             try:
                 self.__driver.quit()
