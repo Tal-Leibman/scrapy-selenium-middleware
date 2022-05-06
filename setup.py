@@ -4,11 +4,11 @@ with open("README.md") as readme_file:
     README = readme_file.read()
 
 setup_args = dict(
-    author="Tal Leibman",
-    author_email="leibman2@gmail.com",
+    author="Tien Thien",
+    author_email="tienthienhd@gmail.com",
     url="https://github.com/Tal-Leibman/scrapy-selenium-middleware",
     name="scrapy_selenium_middleware",
-    version="0.0.5",
+    version="0.0.6",
     description="""Scrapy middleware for downloading a page html source using selenium,
                 and interacting with the web driver in the request context
                 eventually returning an HtmlResponse to the spider
